@@ -19,22 +19,22 @@ app.use(express.static('public'));
 
 // GET Route for homepage
 app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, '/public/index.html'))
+  res.sendFile(path.join(__dirname, '../public/index.html'))
 );
 
 // GET Route for feedback page
 app.get('/feedback', (req, res) =>
-  res.sendFile(path.join(__dirname, '/public/pages/feedback.html'))
+  res.sendFile(path.join(__dirname, '../public/pages/feedback.html'))
 );
 
 // GET Route for retrieving all the tips
 app.get('/api/tips', (req, res) => {
   console.info(`${req.method} request received for tips`);
-  readFromFile('./db/tips.json').then((data) => res.json(JSON.parse(data)));
+  readFromFile(path.join(__dirname, './db/tips.json')).then((data) => res.json(JSON.parse(data)));
 });
 
 // POST Route for a new UX/UI tip
-app.post('/api/tips', (req, res) => {
+app.post(path.join(__dirname, './db/tips.json'), (req, res) => {
   console.info(`${req.method} request received to add a tip`);
 
   const { username, topic, tip } = req.body;
@@ -58,7 +58,7 @@ app.post('/api/tips', (req, res) => {
 app.get('/api/feedback', (req, res) => {
   console.info(`${req.method} request received for feedback`);
 
-  readFromFile('./db/feedback.json').then((data) => res.json(JSON.parse(data)));
+  readFromFile(path.join(__dirname, '/db/feedback.json')).then((data) => res.json(JSON.parse(data)));
 });
 
 // POST Route for submitting feedback
@@ -79,7 +79,7 @@ app.post('/api/feedback', (req, res) => {
       feedback_id: uuid(),
     };
 
-    readAndAppend(newFeedback, './db/feedback.json');
+    readAndAppend(newFeedback, path.join(__dirname, '/db/feedback.json'));
 
     const response = {
       status: 'success',
